@@ -1,0 +1,529 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>FlightControl</title>
+
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="/css/bootstrap.css">
+
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="/css/bootstrap-theme.css">
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">FlightControl</a>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container" style="margin-top: 70px;">
+
+			<div style="padding-bottom: 20px;" class="clearfix">
+				<p>Stick a load of JSON in here to search</p>
+				<textarea class="form-control" rows="3" id="searchField"></textarea>
+
+				<div style="padding: 10px 0;">
+					<!--<a href="#" class="btn btn-default"><span class="glyphicon glyphicon-triangle-bottom" style="top: 2px;"></span>&nbsp; Open Search</a>-->
+
+					<div class="pull-right">
+						<a href="#" class="btn btn-warning" id="clearSearchButton">Clear</a>&nbsp; 
+						<a href="#" class="btn btn-success" id="submitSearchButton">Submit Search</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="">
+				<div id="resultsContainer" style="margin-bottom: 20px;"></div>
+			</div>
+
+		</div><!-- /.container -->
+
+
+		<!-- Bootstrap core JavaScript
+		================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script src="/js/jquery.js"></script>
+
+		<!-- Latest compiled and minified JavaScript -->
+		<script src="/js/bootstrap.js"></script>
+
+		<script src="/js/react-with-addons.js"></script>
+		<script src="/js/jsx.js"></script>
+
+		<script type="text/jsx">
+			var kIndentMultiplier = 10;
+
+			var kGenericTimestampColumnStyle = {
+				float: 'right',
+				textAlign: 'right',
+				width: '220px',
+				paddingLeft: '10px'
+			};
+			var kGenericSystemColumnStyle = {
+				float: 'right',
+				textAlign: 'right',
+				width: '100px',
+				paddingLeft: '10px'
+			};
+			var kGenericHostnameColumnStyle = {
+				float: 'right',
+				textAlign: 'right',
+				fontSize: '13px',
+				width: '220px',
+				paddingLeft: '10px'
+			};
+
+
+			var FilterDropdown = React.createClass({
+				getInitialState: function() {
+					return {
+						selectedOption: null
+					};
+				},
+
+				render: function() {
+					var options = {};
+
+					return (
+						<div>
+							<select>{options}</select>
+						</div>
+					);
+				}
+			});
+
+			
+			var kLongJSONPreStyle = {
+				fontSize: '11px', 
+				marginRight: '220px',
+				marginTop: '4px',
+				marginBottom: '0px'
+			};
+			var LongJSON = React.createClass({
+				onClickHide: function() {
+					if(typeof(this.props.onClickHide) !== 'undefined') {
+						this.props.onClickHide();
+					}
+				},
+
+				render: function() {
+					var component = this;
+
+					var json = JSON.stringify(component.props.data, null, 4);
+
+					return (
+						<div>
+							<a className="btn btn-sm btn-default" onClick={component.onClickHide}>Hide</a>
+							<pre style={kLongJSONPreStyle}>
+								{json}
+							</pre>
+						</div>
+					);
+				}
+			});
+	
+
+			var kShortJSONStyle = {
+				cursor: 'pointer',
+				overflow: 'hidden', 
+				height: '18px',
+				paddingTop: '1px',
+				fontSize: '10px', 
+				marginRight: '190px'
+			};
+			var ShortJSON = React.createClass({
+				onClick: function() {
+					if(typeof(this.props.onClick) !== 'undefined') {
+						this.props.onClick();
+					}
+				},
+
+				render: function() {
+					var component = this;
+
+					var json = JSON.stringify(component.props.data);
+
+					var style = kShortJSONStyle;
+
+					return (
+						<div style={style} onClick={component.onClick}>
+							{json}
+						</div>
+					);
+				}
+			});
+			var ShortJSONFactory = React.createFactory(ShortJSON);
+
+
+			var ExpandableJSON = React.createClass({
+				getInitialState: function() {
+					return {
+						expanded: false
+					};
+				},
+
+				toggleExpanded: function() {
+					this.setState({
+						expanded: !this.state.expanded
+					});
+				},
+
+				render: function() {
+					var component = this;
+
+					if(this.state.expanded) {
+						return <LongJSON data={component.props.data} onClickHide={component.toggleExpanded} />;
+					}
+					else {
+						return <ShortJSON data={component.props.data} onClick={component.toggleExpanded} />;
+					}
+				}
+			});
+			var ExpandableJSONFactory = React.createFactory(ExpandableJSON);
+
+
+
+			var kStaticChildStyle = {
+				color: '#888',
+				fontSize: '11px', 
+				padding: '1px 5px 2px 5px'
+			};
+			var StaticChild = React.createClass({
+				render: function() {
+					var component = this;
+
+					var indentPx = (component.props.level || 0)*kIndentMultiplier;
+					return (
+						<div style={{marginLeft: (component.props.level || 0)*kIndentMultiplier+'px'}}>
+							<div style={kStaticChildStyle}>
+								{component.props.text}
+							</div>
+						</div>
+					);
+				}
+			});
+			var StaticChildFactory = React.createFactory(StaticChild);
+
+			var kLogStyle = {
+				background: 'rgba(250,250,250,0.9)',
+				padding: '2px 5px',
+				marginBottom: '2px',
+				fontSize: '13px'
+			};
+			var Log = React.createClass({
+				getInitialState: function() {
+					return {
+						expanded: false
+					};
+				},
+
+				toggleExpanded: function() {
+					this.setState({
+						expanded: !this.state.expanded
+					});
+				},
+
+				render: function() {
+					var component = this;
+
+
+					var output = null;
+					if(component.state.expanded) {
+						output = (
+							<div>
+								<div style={kGenericHostnameColumnStyle}>{component.props.log.hostname}</div>
+
+								<LongJSON data={component.props.log.data} onClickHide={component.toggleExpanded} />
+							</div>
+						);
+					}
+					else {
+						output = <ShortJSON data={component.props.log.data} onClick={component.toggleExpanded} style={{'cursor': 'pointer'}} />;
+					}
+
+					var indentPx = (component.props.level || 0)*kIndentMultiplier;
+					return (
+						<div style={{marginLeft: indentPx+'px'}}>
+							<div style={kLogStyle}>
+								<div style={kGenericTimestampColumnStyle}>
+									{component.props.log.timestamp}
+								</div>
+
+								{output}
+							</div>
+						</div>
+					);
+				}
+			});
+
+			var kTransactionStyle = {
+				background: '#EFEFEF',
+				padding: '4px',
+				marginBottom: '2px'
+			};
+			var kTransactionHeadingStyle = {
+				cursor: 'pointer'
+			};
+			var kTransactionLabelStyle = {
+				marginRight: '5px',
+				paddingTop: '3px',
+				marginTop: '2px',
+				float: 'left',
+				display: 'block'
+			};
+			var kTransactionInfoStyle = {
+				padding: '4px 3px 0 1px',
+				fontSize: '12px'
+			};
+
+			var LogFactory = React.createFactory(Log);
+			var Transaction = React.createClass({
+				getInitialState: function() {
+					return {
+						loading: false,
+						expanded: false,
+						children: null
+					};
+				},
+
+				onClick: function() {
+					var component = this;
+
+					if(component.state.expanded) {
+						component.setState({
+							expanded: false
+						});
+						return;
+					}
+
+					component.setState({
+						expanded: true,
+						loading: true,
+						children: null
+					});
+
+					$.get('/transaction/'+component.props.transaction.id+'/children', function(data) {
+						component.setState({
+							children: data.children,
+							loading: false
+						});
+					});
+				},
+
+				render: function() {
+					var component = this;
+
+					var transaction = component.props.transaction;
+
+					var children = null;
+					var info = null;
+
+					var labelClass = 'label label-default';
+					var labelText = transaction.type;
+
+					var description = '';
+					if(transaction.type === 'express') {
+						labelText = transaction.data.response.status;
+
+						if(transaction.data.response.status < 300) {
+							labelClass += ' label-success';
+						} 
+						else if(transaction.data.response.status >= 500) {
+							labelClass += ' label-danger';
+						} 
+						else if(transaction.data.response.status >= 400) {
+							labelClass += ' label-warning';
+						} 
+
+						description = ' ' + transaction.data.request.method + ' ' + transaction.data.request.route;
+					}
+
+					description += '  (' + transaction.time + ' ms)';
+
+					if(component.state.expanded == true) {
+						/*if(transaction.type == 'express') {
+							info = (
+								<div style={kTransactionInfoStyle}>
+									<div style={kGenericHostnameColumnStyle}>
+										{transaction.hostname}
+									</div>
+
+									<b>Full URL:</b>  {transaction.data.url}
+								</div>
+							);
+						}
+						else {*/
+							info = ExpandableJSONFactory({
+								data: transaction.data
+							});
+						//}
+
+						if(component.state.loading == true) {
+							children = StaticChildFactory({
+								text: ' ',
+								level: (component.props.level || 0) + 1
+							});
+						}
+						else {
+							children = {};
+
+							for(var i=0; i<component.state.children.length; i++) {
+								var child = component.state.children[i];
+								
+								if(child.type == 'log') {
+									children['c_' + child._id] = LogFactory({
+										log: child.data,
+										level: (component.props.level || 0) + 1
+									});
+								}
+								else if(child.type == 'transaction') {
+									children['c_' + child._id] = TransactionFactory({
+										transaction: child.data,
+										level: (component.props.level || 0) + 1
+									});
+								}
+							}
+
+							if(component.state.children.length == 0) {
+								children = StaticChildFactory({
+									text: 'Nothing to see here',
+									level: (component.props.level || 0) + 1
+								});
+							}
+						}
+					}
+
+					var indentPx = (component.props.level || 0)*kIndentMultiplier;
+					return (
+						<div style={{marginLeft: indentPx+'px'}}>
+							<div style={kTransactionStyle}>
+								<div onClick={component.onClick} style={kTransactionHeadingStyle}>
+									<div style={kGenericTimestampColumnStyle}>{transaction.timestamp}</div>
+									<div style={kGenericSystemColumnStyle}>{transaction.system}:{transaction.env}</div>
+									<span className={labelClass} style={kTransactionLabelStyle}>{labelText}</span>
+									{description}
+								</div>
+
+								{info}
+							</div>
+
+							{children}
+						</div>
+					);
+				}
+			});
+
+			var TransactionFactory = React.createFactory(Transaction);
+			var TransactionList = React.createClass({
+				getInitialState: function() {
+					return {
+						transactions: [],
+						loading: false
+					};
+				},
+
+				render: function() {
+					var component = this;
+
+					var transactions = {};
+
+					for(var i=0; i<component.state.transactions.length; i++) {
+						transactions['t_' + component.state.transactions[i]._id] = TransactionFactory({
+							transaction: component.state.transactions[i]
+						});
+					}
+
+					return (
+						<div>
+							<p style={{'textTransform': 'uppercase', 'color': '#999', 'fontSize': '13px', 'fontWeight': 'bold'}}>{component.state.transactions.length} Results</p>
+
+							{transactions}
+						</div>
+					);
+				}
+			});
+
+			var TransactionListFactory = React.createFactory(TransactionList);
+
+			var transactionList = React.render(TransactionListFactory(), document.getElementById('resultsContainer'));
+
+			var lastSearch = window.localStorage.getItem('last_search');
+			if(lastSearch) {
+				$('#searchField').val(lastSearch);
+			}
+
+			var submitSearch = function() {
+				var jsonStr = $('#searchField').val();
+
+				var obj = {};
+				if(jsonStr.length > 0) {
+					try {
+						obj = JSON.parse(jsonStr);
+					}
+					catch(e) {
+						alert(e);
+						return;
+					}
+				}
+
+				$.ajax({
+					url: '/search/transaction',
+					data: JSON.stringify(obj),
+					headers: {
+						'content-type': 'application/json'
+					},
+					method: 'post',
+					success: function(data) {
+						transactionList.setState({
+							transactions: data.transactions
+						});
+					}
+				});
+			};
+			submitSearch();
+
+			$('#submitSearchButton').click(function(e) {
+				e.preventDefault();
+
+				window.localStorage.setItem('last_search', $('#searchField').val());
+
+				submitSearch();
+			});
+			$('#clearSearchButton').click(function(e) {
+				e.preventDefault();
+
+				$('#searchField').val('');
+			});
+
+			var fetchOptionsForTypeField = function(type, field, cb) {
+				$.ajax({
+					url: '/aggregate/' + type + '/' + field,
+					success: function(data) {
+						cb(null, data.options);
+					}
+				});
+			};
+		</script>
+
+		<script>
+		</script>
+	</body>
+</html>
