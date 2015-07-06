@@ -41,6 +41,24 @@
 				<textarea class="form-control" rows="3" id="searchField"></textarea>
 
 				<div style="padding: 10px 0;">
+					<select class="form-control" id="relativeTimeSelect" style="display: inline-block; width: auto;">
+						<option>-30s</option>
+						<option>-1m</option>
+						<option>-2m</option>
+						<option>-5m</option>
+						<option>-10m</option>
+						<option>-15m</option>
+						<option>-30m</option>
+						<option>-45m</option>
+						<option>-1h</option>
+						<option>-2h</option>
+						<option>-6h</option>
+						<option>-12h</option>
+						<option>-1d</option>
+						<option>-2d</option>
+						<option>-7d</option>
+					</select>
+
 					<!--<a href="#" class="btn btn-default"><span class="glyphicon glyphicon-triangle-bottom" style="top: 2px;"></span>&nbsp; Open Search</a>-->
 
 					<div class="pull-right">
@@ -483,6 +501,8 @@
 						return;
 					}
 				}
+
+				obj.relativeTime = $('#relativeTimeSelect').val();
 
 				$.ajax({
 					url: '/search/transaction',
