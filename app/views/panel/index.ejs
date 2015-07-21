@@ -113,16 +113,65 @@
 			var FilterDropdown = React.createClass({
 				getInitialState: function() {
 					return {
-						selectedOption: null
+						selectedOption: null,
+						availableOptions: {}
 					};
 				},
 
+				componentDidMount: function() {
+					if(typeof(this.props.field) !== 'undefined' && typeof(this.props.type) !== 'undefined') {
+						this.fetchAvailableOptionsForFieldInType(this.props.field, this.props.type);
+					}
+				},
+
+				componentWillReceiveProps: function(newProps) {
+					if(typeof(newProps.field) !== 'undefined' && typeof(newProps.type) !== 'undefined') {
+						this.fetchAvailableOptionsForFieldInType(newProps.field, newProps.type);
+					}
+				},
+
+				fetchAvailableOptionsForFieldInType: function(field, type) {
+					var component = this;
+
+					$.ajax({
+						url: '/aggregate/'+type+'/'+field,
+						headers: {
+							'content-type': 'application/json'
+						}
+						success: function(data) {
+							var opts = {};
+
+							for(var i=0; i<data.length; i++) {
+								opts[data[i]] = true;
+							}
+
+							component.setState({
+								selectedOption: null,
+								availableOptions: opts
+							});
+						}
+					});
+				},	
+
+				onChange: function(e) {
+
+				},
+
 				render: function() {
+					var component = this;
+
 					var options = {};
+
+					for(var k in availableOptions) {
+						options['opt_'+k] = <option>{k}</option>;
+					}
 
 					return (
 						<div>
-							<select>{options}</select>
+							<select selected={component.state.selectedOption} onChange={component.onChange}>
+								<option value="">- any -</option>
+								{options}
+							</select>
 						</div>
 					);
 				}
@@ -471,6 +520,9 @@
 
 					return (
 						<div>
+							<div style={kTransactionListFilterStyle}>
+								<FilterDropdown type="transaction" field="type" />
+
 							<p style={{'textTransform': 'uppercase', 'color': '#999', 'fontSize': '13px', 'fontWeight': 'bold'}}>{component.state.transactions.length} Results</p>
 
 							{transactions}

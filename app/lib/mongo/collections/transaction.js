@@ -18,6 +18,8 @@ module.exports = {
                 type: Schema.Types.Mixed,
                 default: {}
             }
+        }, { 
+            capped: 1000000000 // 1 GB 
         });
 
         db.models.transaction = mongoose.model('transactions', transactionSchema);

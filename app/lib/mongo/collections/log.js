@@ -15,6 +15,8 @@ module.exports = {
                 type: Schema.Types.Mixed,
                 default: {}
             }
+        }, { 
+            capped: 2000000000 // 2 GB
         });
 
         db.models.log = mongoose.model('logs', logSchema);
