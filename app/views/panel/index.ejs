@@ -109,7 +109,7 @@
 				paddingLeft: '10px'
 			};
 
-
+/*
 			var FilterDropdown = React.createClass({
 				getInitialState: function() {
 					return {
@@ -175,7 +175,7 @@
 						</div>
 					);
 				}
-			});
+			});*/
 
 			
 			var kLongJSONPreStyle = {
@@ -517,11 +517,11 @@
 							transaction: component.state.transactions[i]
 						});
 					}
-
+/*<div style={kTransactionListFilterStyle}>
+								<FilterDropdown type="transaction" field="type" />*/
 					return (
 						<div>
-							<div style={kTransactionListFilterStyle}>
-								<FilterDropdown type="transaction" field="type" />
+							
 
 							<p style={{'textTransform': 'uppercase', 'color': '#999', 'fontSize': '13px', 'fontWeight': 'bold'}}>{component.state.transactions.length} Results</p>
 
