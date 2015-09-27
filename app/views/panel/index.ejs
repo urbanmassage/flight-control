@@ -422,6 +422,21 @@
 
 						description = ' ' + transaction.data.request.method + ' ' + transaction.data.request.route;
 					}
+					else if(transaction.type.toLowerCase() === 'rabbitr') {
+						labelText = transaction.data.status;
+
+						if(transaction.data.status == 'ack') {
+							labelClass += ' label-success';
+						} 
+						else if(transaction.data.status == 'reject') {
+							labelClass += ' label-danger';
+						} 
+						else if(transaction.data.status == 'error') {
+							labelClass += ' label-warning';
+						} 
+
+						description = ' ' + transaction.data.topic;
+					}
 
 					description += '  (' + transaction.time + ' ms)';
 
