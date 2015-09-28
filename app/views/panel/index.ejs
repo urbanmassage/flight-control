@@ -534,9 +534,15 @@
 					}
 /*<div style={kTransactionListFilterStyle}>
 								<FilterDropdown type="transaction" field="type" />*/
+
+					var loading = null;
+					if(component.state.loading === true) {
+						loading = <p className="text-muted">Loading...</p>;
+					}
+
 					return (
 						<div>
-							
+							{loading}
 
 							<p style={{'textTransform': 'uppercase', 'color': '#999', 'fontSize': '13px', 'fontWeight': 'bold'}}>{component.state.transactions.length} Results</p>
 
@@ -571,6 +577,10 @@
 
 				obj.relativeTime = $('#relativeTimeSelect').val();
 
+				transactionList.setState({
+					loading: true
+				});
+
 				$.ajax({
 					url: '/search/transaction',
 					data: JSON.stringify(obj),
@@ -580,6 +590,7 @@
 					method: 'post',
 					success: function(data) {
 						transactionList.setState({
+							loading: false,
 							transactions: data.transactions
 						});
 					}
