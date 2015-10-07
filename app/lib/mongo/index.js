@@ -3,7 +3,9 @@ var async = require('async');
 
 var collections = require('./collections');
 
-var dbURL = process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/flight_control';
+var MONGO_URL_BASE = process.env.MONGO_URL_BASE || 'mongodb://127.0.0.1:27017';
+var MONGO_DB = process.env.MONGO_DB || 'flight_control';
+var dbURL = process.env.MONGO_URL || MONGO_URL_BASE + '/' + MONGO_DB;
 
 var cachedDB = null;
 
