@@ -1,3 +1,5 @@
+process.title = 'node flight-control';
+
 var Server = require('easy-server');
 
 var server = new Server({
