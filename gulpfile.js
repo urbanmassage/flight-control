@@ -21,6 +21,9 @@ gulp.task('babel', function () {
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./'));
 });
+gulp.task('babel-watch', ['clean-babel'], function () {
+  gulp.watch('app/client/**/*.jsx', ['babel']);
+});
 
 gulp.task('webpack', function () {
   var base = __dirname;
@@ -38,7 +41,7 @@ gulp.task('webpack', function () {
     .pipe(gulp.dest('public/client/'));
 });
 
-gulp.task('server', ['clean-babel', 'start-server'], function () {
+gulp.task('server', ['babel-watch', 'start-server'], function () {
   gulp.watch(['server.js', 'server-dev.js', 'webpack.config.js'], ['start-server']);
 });
 
