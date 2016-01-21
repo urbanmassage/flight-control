@@ -2,13 +2,16 @@ import * as React from 'react';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import routes from './routes';
-import {browserHistory, Router, match} from 'react-router';
+import {Router, match} from 'react-router';
+import createBrowserHistory from 'history/lib/createBrowserHistory'
 import {applyMiddleware} from 'redux';
 import {syncHistory} from 'redux-simple-router';
 
 window.React = React;
 
 import 'normalize.css';
+
+const browserHistory = createBrowserHistory();
 
 // TODO - display loading indicator
 

@@ -6,7 +6,8 @@ global.requireEnsure = function(modules, callback) { callback(); };
 
 import {Provider} from 'react-redux';
 import routes from './routes';
-import {match, RouterContext, createMemoryHistory} from 'react-router';
+import {match, RoutingContext} from 'react-router';
+import createMemoryHistory from 'history/lib/createMemoryHistory';
 import {applyMiddleware} from 'redux';
 import {syncHistory} from 'redux-simple-router';
 
@@ -36,7 +37,7 @@ function renderApp(req, res, next) {
         };
         const rendered = renderToString(
           <Provider store={store}>
-            <RouterContext {...renderProps} />
+            <RoutingContext {...renderProps} />
           </Provider>
         );
         const state = store.getState();
