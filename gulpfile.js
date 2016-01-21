@@ -39,27 +39,35 @@ gulp.task('webpack', function () {
 });
 
 gulp.task('server', ['clean-babel', 'start-server'], function () {
-  gulp.watch('app/client/**/*.jsx', ['start-server']);
+  gulp.watch(['server.js', 'server-dev.js', 'webpack.config.js'], ['start-server']);
 });
 
 var node;
 function stopNode() {
-  if (node) node.kill()
+  if (node) {
+    gutil.log('Stopping node');
+    node.kill();
+    return new Promise(function (resolve) {
+      node.on('close', resolve);
+    });
+  }
 }
 function startNode() {
-  stopNode();
   if (!node) {
     gutil.log('starting node');
-    node = spawn('node', ['server'], { stdio: 'inherit', env: Object.assign({}, process.env, { HOT: 1 }) });
+    node = spawn('node', ['server-dev'], { stdio: 'inherit' });
     node.on('close', function (code) {
       if (code === 8) {
         gutil.log('Error detected, please restart your server...');
+      } else {
+        gutil.log('Node exited with code %d', code);
       }
       node = null;
     });
   }
 }
-gulp.task('start-server', ['babel'], startNode);
+gulp.task('stop-server', stopNode);
+gulp.task('start-server', ['babel', 'stop-server'], startNode);
 // clean up if an error goes unhandled.
 process.on('exit', stopNode);
 

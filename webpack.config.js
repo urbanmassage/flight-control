@@ -40,7 +40,7 @@ var plugins = [
 
 var output = {
   path: path.join(__dirname, 'public/client'),
-  publicPath: '/',
+  publicPath: '/client/',
   filename: 'index.js',
 };
 
@@ -56,7 +56,8 @@ if (process.env.NODE_ENV === 'development') {
   plugins.push(new Assets({ path: 'public/client', filename: 'manifest.json' }));
 
   if (process.env.HOT) {
-    plugins.push(new webpack.HotModuleReplacementPlugin());
+    entry = ['webpack-hot-middleware/client', entry];
+    plugins.unshift(new webpack.HotModuleReplacementPlugin());
   }
 } else {
   // Cache buster

@@ -6,13 +6,13 @@
       plugins: ['transform-react-remove-prop-types']
     },
     hot: {
-      plugins: ['react-transform', {
+      plugins: [['react-transform', {
         transforms: [{
           transform: 'react-transform-hmr',
           imports: ['react'],
           locals: ['module']
         }]
-      }]
+      }]]
     }
   }
 }
