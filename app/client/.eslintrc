@@ -1,0 +1,40 @@
+{
+  "extends": "airbnb",
+  "rules": {
+    "id-length": [1, {
+      "exceptions": ["i", "$"]
+    }],
+    "spaced-comment": 0,
+    "func-names": 0,
+    "eqeqeq": [1, "allow-null"],
+    "max-len": [1, 120],
+    "object-curly-spacing": [1, "never"],
+    "space-before-function-paren": [1, "never"],
+    "react/jsx-no-bind": 0,
+    "react/prefer-es6-class": 1,
+    "react/jsx-indent-props": 0,
+    "react/jsx-closing-bracket-location": [2, {
+      "nonEmpty": "after-props",
+      "selfClosing": false
+    }],
+    "react/sort-comp": [1, {
+      "order": [
+        "mixins",
+        "lifecycle",
+        "everything-else",
+        "rendering"
+      ],
+      "groups": {
+        "mixins": [
+          "mixins",
+          "stores",
+          "/^getStateFor.+$/"
+        ],
+        "rendering": [
+          "render",
+          "/^render.+$/"
+        ]
+      }
+    }]
+  }
+}

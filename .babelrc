@@ -1,0 +1,18 @@
+{
+  presets: ['es2015', 'react', 'stage-2'],
+  plugins: ['transform-runtime'],
+  env: {
+    production: {
+      plugins: ['transform-react-remove-prop-types']
+    },
+    hot: {
+      plugins: ['react-transform', {
+        transforms: [{
+          transform: 'react-transform-hmr',
+          imports: ['react'],
+          locals: ['module']
+        }]
+      }]
+    }
+  }
+}
