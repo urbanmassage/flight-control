@@ -2,7 +2,7 @@ process.env.HOT = '1';
 
 var server = require('./server');
 
-var debounce = require('debounce');
+var debounce = require('js-debounce');
 var chokidar = require('chokidar');
 var webpack = require('webpack');
 var config = require('./webpack.config');
@@ -17,7 +17,7 @@ server.app.use(require('webpack-hot-middleware')(compiler));
 
 // Do "hot-reloading" of react stuff on the server
 // Throw away the cached client modules and let them be re-required next time
-compiler.plugin('done', function() {
+compiler.plugin('done', function () {
   debounce('clear-client-cache', 1000, function () {
     console.log("Clearing client module cache");
     Object.keys(require.cache).forEach(function(id) {
