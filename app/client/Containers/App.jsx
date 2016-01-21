@@ -1,6 +1,6 @@
 import * as React from 'react';
-import Layout from './Presenters/Layout';
-import TransactionIDBar from './Containers/TransactionIDBar';
+import Layout from '../Presenters/Layout';
+import TransactionIDBar from './TransactionIDBar';
 
 class App extends React.Component {
   render() {
@@ -8,7 +8,7 @@ class App extends React.Component {
       <Layout searchBar={(
         <TransactionIDBar />
       )}>
-        Hello!
+        {this.props.children}
       </Layout>
     );
   }

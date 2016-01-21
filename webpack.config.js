@@ -15,6 +15,7 @@ var definePlugin = new webpack.DefinePlugin({
   'process.env': {
     NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
   },
+  'requireEnsure': 'require.ensure',
 
   // Add other variables here and they will be replaced in all files. Remember to 'JSON.stringify'.
 });
