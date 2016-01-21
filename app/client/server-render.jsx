@@ -20,7 +20,7 @@ function renderApp(req, res, next) {
     if (error) {
       next(error);
     } else if (redirectLocation) {
-      res.redirect(302, redirectLocation.pathname + redirectLocation.search)
+      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
       // You can also check renderProps.components or renderProps.routes for
       // your "not found" component or route respectively, and send a 404 as
@@ -55,7 +55,7 @@ function renderApp(req, res, next) {
     } else {
       next();
     }
-  })
+  });
 }
 
 module.exports = renderApp;

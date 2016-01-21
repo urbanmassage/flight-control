@@ -5,13 +5,23 @@ const routes = [
     path: '/',
     component: App,
     childRoutes: [{
-      path: '/test',
+      path: 'transactions',
       getComponent(location, cb) {
         requireEnsure([], () => {
-          const Home = require('./Containers/Home').default;
-          cb(null, Home);
+          const Transactions = require('./Containers/Transactions').default;
+          cb(null, Transactions);
         });
       },
+      childRoutes: [{
+        name: 'transaction',
+        path: ':transaction_id',
+        getComponent(location, cb) {
+          requireEnsure([], () => {
+            const Transaction = require('./Containers/Transaction').default;
+            cb(null, Transaction);
+          });
+        },
+      }],
     }],
   },
 ];

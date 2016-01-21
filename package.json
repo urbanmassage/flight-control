@@ -15,6 +15,7 @@
     "easy-server": "0.0.7",
     "ejs": "^2.3.1",
     "hata": "^0.3.2",
+    "history": "^2.0.0-rc2",
     "js-debounce": "^0.3.1",
     "material-ui": "^0.14.2",
     "mongoose": "^4.0.6",
@@ -22,10 +23,11 @@
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
     "react-redux": "^4.0.6",
-    "react-router": "^2.0.0-rc5",
+    "react-router": "^1.0.3",
     "react-tap-event-plugin": "^0.2.1",
     "redux": "^3.0.5",
     "redux-simple-router": "^2.0.4",
+    "redux-thunk": "^1.0.3",
     "serve-static": "^1.10.0"
   },
   "devDependencies": {
