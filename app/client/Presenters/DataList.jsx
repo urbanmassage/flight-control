@@ -1,27 +1,26 @@
 import * as React from 'react';
-import CircularProgress from 'material-ui/lib/circular-progress';
 import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
+import DataWrapper from './DataWrapper';
 
 const DataList = (props) => {
-  const {data, status, error} = props.state;
-  const {dataKey, renderItem} = props;
+  const {dataKey, renderItem, state} = props;
+  const {data} = state;
 
-  if (status === 'error') {
-    return <p style={{padding: 20}}>{error.message}</p>;
-  } else if (data && data[dataKey]) {
+  let children;
+  if (data && data[dataKey]) {
     if (data[dataKey].length) {
-      return (
+      children = (
         <List>
           {data[dataKey].map(renderItem).map(itemProps => <ListItem {...itemProps} />)}
         </List>
       );
+    } else {
+      children = <p style={{padding: 20}}>No items were found.</p>;
     }
-    return <p style={{padding: 20}}>No items were found.</p>;
-  } else if (status === 'loading') {
-    return <div style={{padding: 20, textAlign: 'center'}}><CircularProgress mode="indeterminate" /></div>;
   }
-  return <p>Waiting</p>;
+
+  return <DataWrapper state={state}>{children}</DataWrapper>;
 };
 DataList.propTypes = {
   dataKey: React.PropTypes.string.isRequired,

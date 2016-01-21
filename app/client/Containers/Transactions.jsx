@@ -2,7 +2,10 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import fetchTransactions from '../actions/transactions';
 import Paper from 'material-ui/lib/paper';
-import DataList from '../Presenters/DataList';
+import DataWrapper from '../Presenters/DataWrapper';
+import TransactionsList from '../Presenters/TransactionsList';
+import TextField from 'material-ui/lib/text-field';
+import RaisedButton from 'material-ui/lib/raised-button';
 
 @connect(({transactions}) => ({transactions}), {fetchTransactions})
 class Transactions extends React.Component {
@@ -10,27 +13,32 @@ class Transactions extends React.Component {
     this.props.fetchTransactions();
   }
   render() {
-    const transactions = (
-      <DataList state={this.props.transactions} dataKey="transactions"
-        renderItem={transaction => ({ key: transaction.id, primaryText: transaction.name })} />
-    );
+    const {data} = this.props.transactions;
 
-    let singleTransaction;
-    if (this.props.children) {
-      singleTransaction = this.props.children;
-    } else {
-      singleTransaction = <p>Select a transaction from the right to view it.</p>;
-    }
+    const transactions = <TransactionsList transactions={data && data.transactions} />;
 
     return (
       <div className="row">
         <div className="col-sm-6 col-md-4">
-          <Paper zDepth={1}>
-            {transactions}
+          <Paper zDepth={1} style={{padding: 20}}>
+            <h2>Search</h2>
+            <form method="get" action="/transactions/" onSubmit={(evt) => {
+              evt.preventDefault();
+              dispatch(routeActions.replace('/transactions/' + evt.target.transactionId.value));
+            }} className="row">
+              <div className="col-xs-8">
+                <TextField name="transactionId" hintText="Transaction ID" style={{width: '100%'}} />
+              </div>
+              <div className="col-xs-4">
+                <RaisedButton label="Find" primary={true} />
+              </div>
+            </form>
           </Paper>
         </div>
         <div className="col-sm-6 col-md-8">
-          {singleTransaction}
+          <DataWrapper state={this.props.transactions}>
+            {transactions}
+          </DataWrapper>
         </div>
       </div>
     );
