@@ -6,7 +6,9 @@ global.requireEnsure = function(modules, callback) { callback(); };
 
 import {Provider} from 'react-redux';
 import routes from './routes';
-import {match, RouterContext} from 'react-router';
+import {match, RouterContext, createMemoryHistory} from 'react-router';
+import {applyMiddleware} from 'redux';
+import {syncHistory} from 'redux-simple-router';
 
 /* eslint-disable no-sync */
 import {readFileSync} from 'fs';
@@ -14,7 +16,7 @@ const template = readFileSync(__dirname + '/index.html', 'utf8');
 /* eslint-enable no-sync */
 
 function renderApp(req, res, next) {
-  match({ routes, location: req.url }, (error, redirectLocation, renderProps) => {
+  match({routes, location: req.url}, (error, redirectLocation, renderProps) => {
     if (error) {
       next(error);
     } else if (redirectLocation) {
@@ -24,7 +26,10 @@ function renderApp(req, res, next) {
       // your "not found" component or route respectively, and send a 404 as
       // below, if you're using a catch-all route.
       try {
-        const store = require('./store')();
+        const history = createMemoryHistory(req.url);
+        const reduxRouterMiddleware = syncHistory(history);
+
+        const store = applyMiddleware(reduxRouterMiddleware)(require('./store'))();
 
         global.navigator = { // Required for material-ui
           userAgent: req.headers['user-agent'],

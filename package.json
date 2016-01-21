@@ -25,6 +25,7 @@
     "react-router": "^2.0.0-rc5",
     "react-tap-event-plugin": "^0.2.1",
     "redux": "^3.0.5",
+    "redux-simple-router": "^2.0.4",
     "serve-static": "^1.10.0"
   },
   "devDependencies": {
@@ -56,6 +57,9 @@
     "less": "^2.5.3",
     "less-loader": "^2.2.2",
     "react-transform-hmr": "^1.0.1",
+    "redux-devtools": "^3.0.1",
+    "redux-devtools-dock-monitor": "^1.0.1",
+    "redux-devtools-log-monitor": "^1.0.2",
     "style-loader": "^0.13.0",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.11",

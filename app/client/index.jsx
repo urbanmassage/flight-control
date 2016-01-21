@@ -3,6 +3,8 @@ import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import routes from './routes';
 import {browserHistory, Router, match} from 'react-router';
+import {applyMiddleware} from 'redux';
+import {syncHistory} from 'redux-simple-router';
 
 window.React = React;
 
@@ -10,8 +12,18 @@ import 'normalize.css';
 
 // TODO - display loading indicator
 
+// Sync dispatched route actions to the history
+const reduxRouterMiddleware = syncHistory(browserHistory);
+const {NODE_ENV} = process.env;
+
 match({routes, location}, (error, redirectLocation, renderProps) => {
-  const store = require('./store')(window.initialStoreData);
+  const store = applyMiddleware(reduxRouterMiddleware)(require('./store'))(window.initialStoreData);
+
+  if (NODE_ENV === 'development') {
+    // Required for replaying actions from devtools to work
+    reduxRouterMiddleware.listenForReplays(store);
+  }
+
   render((
     <Provider store={store}>
       <Router {...renderProps} history={browserHistory} />
