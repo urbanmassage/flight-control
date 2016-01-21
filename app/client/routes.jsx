@@ -6,14 +6,12 @@ const routes = [
     component: App,
     childRoutes: [{
       path: '/test',
-      component: require('./Containers/Home').default,
-      // TODO - we get checksum mismatch error here. Find a solution
-      // getComponent(location, cb) {
-      //   requireEnsure([], () => {
-      //     const Home =require('./Containers/Home').default;
-      //     cb(null, Home);
-      //   });
-      // },
+      getComponent(location, cb) {
+        requireEnsure([], () => {
+          const Home = require('./Containers/Home').default;
+          cb(null, Home);
+        });
+      },
     }],
   },
 ];

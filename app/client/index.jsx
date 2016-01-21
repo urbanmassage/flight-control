@@ -2,16 +2,19 @@ import * as React from 'react';
 import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import routes from './routes';
-import {browserHistory, Router} from 'react-router'
+import {browserHistory, Router, match} from 'react-router';
 
 window.React = React;
 
 import 'normalize.css';
 
-const store = require('./store')(window.initialStoreData);
+// TODO - display loading indicator
 
-render((
-  <Provider store={store}>
-    <Router routes={routes} history={browserHistory} />
-  </Provider>
-), document.getElementById('app'));
+match({routes, location}, (error, redirectLocation, renderProps) => {
+  const store = require('./store')(window.initialStoreData);
+  render((
+    <Provider store={store}>
+      <Router {...renderProps} history={browserHistory} />
+    </Provider>
+  ), document.getElementById('app'));
+});
