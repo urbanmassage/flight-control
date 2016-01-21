@@ -12,6 +12,9 @@ function renderApp(req, res, next) {
   try {
     const store = require('./store')();
 
+    global.navigator = { // Required for material-ui
+      userAgent: req.headers['user-agent'],
+    };
     const rendered = renderToString(
       <App state={store.getState()} dispatch={() => null}/>
     );
