@@ -27,7 +27,8 @@ class Layout extends React.Component {
     return (
       <div>
         <AppBar title="Flight Control"
-          showMenuIconButton={false} />
+          showMenuIconButton={false}
+          iconElementRight={this.props.searchBar} />
         <div style={{padding: Theme.rawTheme.spacing.desktopGutter}}>
           {this.props.children}
         </div>
