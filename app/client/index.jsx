@@ -10,6 +10,7 @@ import {syncHistory} from 'redux-simple-router';
 window.React = React;
 
 import 'normalize.css';
+import 'flexboxgrid';
 
 const browserHistory = createBrowserHistory();
 
