@@ -2,6 +2,7 @@ import * as React from 'react';
 import {renderToString} from 'react-dom/server';
 
 import App from './App';
+import {Provider} from 'react-redux';
 
 /* eslint-disable no-sync */
 import {readFileSync} from 'fs';
@@ -16,7 +17,9 @@ function renderApp(req, res, next) {
       userAgent: req.headers['user-agent'],
     };
     const rendered = renderToString(
-      <App state={store.getState()} dispatch={() => null}/>
+      <Provider store={store}>
+        <App />
+      </Provider>
     );
     const state = store.getState();
 
