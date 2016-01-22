@@ -3,19 +3,19 @@ const fetchMiddleware = ({dispatch, getState}) =>
     action =>
       typeof action === 'object' && action.isFetch ?
         (() => {
-          const {type, stateKey, request, url} = action;
+          const {type, stateKey, request, url, args} = action;
           const state = getState()[stateKey];
 
           // Don't fetch twice.
           if (state && state.status === 'loading') return null;
 
-          dispatch({type, status: 'loading', request, url});
+          dispatch({type, status: 'loading', request, url, args});
 
           return fetch(url, request).then(response => response.json().then(data => {
             if (response.status >= 400) throw Object.assign(new Error('Got an error from the server'), data);
-            dispatch({type, status: 'success', data, request, url});
+            dispatch({type, status: 'success', data, request, url, args});
           })).catch(error => {
-            dispatch({type, status: 'error', error, request, url});
+            dispatch({type, status: 'error', error, request, url, args});
           });
         })() :
         next(action);

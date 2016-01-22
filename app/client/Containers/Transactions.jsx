@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import fetchTransactions from '../actions/transactions';
 import Paper from 'material-ui/lib/paper';
 import DataWrapper from '../Presenters/DataWrapper';
-import TransactionsList from '../Presenters/TransactionsList';
+import TransactionsList from './TransactionsList';
 import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
 
