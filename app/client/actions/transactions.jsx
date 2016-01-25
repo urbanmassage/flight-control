@@ -4,6 +4,7 @@ function fetchTransactions() {
   return {
     type: FETCH_TRANSACTIONS,
     isFetch: true,
+    requestKey: 'transactions-search',
     url: '/search/transaction',
     request: {
       method: 'POST',

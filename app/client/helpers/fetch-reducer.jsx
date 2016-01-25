@@ -1,3 +1,6 @@
+/**
+ * A reducer creator that accepts actions from `fetch-middleware` and stores them.
+ */
 export default function fetchReducer(actionType, initialData) {
   const initialState = {status: 'waiting', data: initialData, error: null};
   return function(state = initialState, action) {

@@ -4,6 +4,7 @@ function fetchTransactionChildren(transactionId) {
   return {
     type: FETCH_TRANSACTION_CHILDREN,
     isFetch: true,
+    requestKey: 'transaction-' + transactionId + '-children',
     url: '/transaction/' + transactionId + '/children',
     args: {transactionId},
     request: {
