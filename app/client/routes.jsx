@@ -6,19 +6,20 @@ const routes = [
     component: App,
     childRoutes: [{
       path: 'transactions',
-      getComponent(location, cb) {
+      getComponents(location, cb) {
         requireEnsure([], () => {
+          const Search = require('./Containers/Search').default;
           const Transactions = require('./Containers/Transactions').default;
-          cb(null, Transactions);
+          cb(null, {sidebar: Search, main: Transactions});
         });
       },
       childRoutes: [{
-        name: 'transaction',
         path: ':transaction_id',
-        getComponent(location, cb) {
+        getComponents(location, cb) {
           requireEnsure([], () => {
+            const Transactions = require('./Containers/Transactions').default;
             const Transaction = require('./Containers/Transaction').default;
-            cb(null, Transaction);
+            cb(null, {sidebar: Transactions, main: Transaction});
           });
         },
       }],

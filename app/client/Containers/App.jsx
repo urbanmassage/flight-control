@@ -15,17 +15,30 @@ class App extends React.Component {
     }
   }
   render() {
+    const {sidebar, main} = this.props;
+    // TODO - find a better way? we use higher-order-components so we can't use class props
+    let sidebarKey = sidebar.constructor.displayName;
+    let mainKey = main.constructor.displayName;
     return (
       <div>
         {devTools}
-        <Layout searchBar={(
-          <TransactionIDBar />
-        )}>
-          {this.props.children}
+        <Layout>
+          <div className="row">
+            <div className="col-sm-6 col-md-4" key={sidebarKey}>
+              {sidebar}
+            </div>
+            <div className="col-sm-6 col-md-8" key={mainKey}>
+              {main}
+            </div>
+          </div>
         </Layout>
       </div>
     );
   }
+  static propTypes = {
+    sidebar: React.PropTypes.element.isRequired,
+    main: React.PropTypes.element.isRequired,
+  };
 }
 
 export default App;
