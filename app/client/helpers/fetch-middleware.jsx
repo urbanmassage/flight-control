@@ -32,9 +32,11 @@ const fetchMiddleware = ({dispatch, getState}) =>
 
           return fetch(url, request).then(response => response.json().then(data => {
             if (response.status >= 400) throw Object.assign(new Error('Got an error from the server'), data);
+            return data;
+          })).then(data => {
             isLoadingMap[requestKey] = false;
             dispatch({type, status: 'success', data, request, url, args});
-          })).catch(error => {
+          }, error => {
             isLoadingMap[requestKey] = false;
             dispatch({type, status: 'error', error, request, url, args});
           });
