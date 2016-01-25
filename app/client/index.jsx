@@ -7,6 +7,8 @@ import createBrowserHistory from 'history/lib/createBrowserHistory';
 import {applyMiddleware} from 'redux';
 import {syncHistory} from 'redux-simple-router';
 
+require('react-tap-event-plugin')();
+
 window.React = React;
 
 import 'normalize.css';
