@@ -5,7 +5,7 @@ function fetchTransaction(transactionId) {
     type: FETCH_TRANSACTION,
     isFetch: true,
     requestKey: 'transaction-' + transactionId,
-    url: '/transaction/' + transactionId,
+    url: '/api/transaction/' + transactionId,
     args: {transactionId},
     request: {
       method: 'GET',

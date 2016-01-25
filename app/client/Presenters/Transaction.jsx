@@ -54,16 +54,16 @@ const Transaction = ({transaction, isSmall, onClick}) => {
   return (
     <div>
       <ListItem primaryText={title} secondaryText={transaction.system}
-        leftAvatar={<Avatar icon={icon} backgroundColor={color} />} onClick={() => onClick(transaction)} />
+        leftAvatar={<Avatar icon={icon} backgroundColor={color} />} onClick={() => onClick && onClick(transaction)} />
         {(transaction.children || []).map(child => (
-          <Transaction key={child.id} isSmall transaction={child} onClick={() => onClick(child)} />
+          <Transaction key={child.id} isSmall transaction={child} onClick={() => onClick && onClick(child)} />
         ))}
     </div>
   );
 };
 Transaction.propTypes = {
   isSmall: React.PropTypes.bool,
-  onClick: React.PropTypes.func.isRequired,
+  onClick: React.PropTypes.func,
   transaction: React.PropTypes.object.isRequired,
 };
 

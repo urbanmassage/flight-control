@@ -24,7 +24,7 @@ class DataWrapper extends React.Component {
       status: React.PropTypes.string.isRequired,
       error: React.PropTypes.object,
       data: React.PropTypes.object,
-    }).isRequired,
+    }),
   };
 }
 
