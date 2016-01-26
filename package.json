@@ -69,7 +69,6 @@
     "less-loader": "^2.2.2",
     "mocha": "^2.3.4",
     "node-sass": "^3.4.2",
-    "react-tap-event-plugin": "^0.2.1",
     "react-transform-hmr": "^1.0.1",
     "redux-devtools": "^3.0.1",
     "redux-devtools-dock-monitor": "^1.0.1",
