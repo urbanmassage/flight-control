@@ -20,21 +20,18 @@ class App extends React.Component {
   }
   render() {
     const {sidebar, main} = this.props;
-    // TODO - find a better way? we use higher-order-components so we can't use class props
-    let sidebarKey = sidebar.constructor.displayName;
-    let mainKey = main.constructor.displayName;
     return (
       <div>
         {devTools}
         <Layout>
-          <div className="row">
-            <div className="col-sm-6 col-md-4" key={sidebarKey}>
-              {sidebar}
-            </div>
-            <div className="col-sm-6 col-md-8" key={mainKey}>
-              {main}
-            </div>
-          </div>
+          <div className="row">{[
+            (<div className="col-sm-6 col-md-4 animated" key={sidebar.key}>
+              {React.cloneElement(sidebar, {key: sidebar.key})}
+            </div>),
+            (<div className="col-sm-6 col-md-8 animated" key={main.key}>
+              {React.cloneElement(main, {key: main.key})}
+            </div>),
+          ]}</div>
         </Layout>
       </div>
     );

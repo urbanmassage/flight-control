@@ -5,7 +5,7 @@ function fetchTransactionChildren(transactionId) {
     type: FETCH_TRANSACTION_CHILDREN,
     isFetch: true,
     requestKey: 'transaction-' + transactionId + '-children',
-    url: '/transaction/' + transactionId + '/children',
+    url: '/api/transaction/' + transactionId + '/children',
     args: {transactionId},
     request: {
       method: 'GET',

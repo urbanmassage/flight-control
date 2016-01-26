@@ -6,6 +6,7 @@ import DataWrapper from '../Presenters/DataWrapper';
 import TransactionsList from '../Presenters/TransactionsList';
 import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
+import {routeActions} from 'react-router-redux';
 
 class Transactions extends React.Component {
   componentDidMount() {
@@ -28,8 +29,19 @@ class Transactions extends React.Component {
 
   render() {
     const {data} = this.props.transactions;
+    const {params} = this.props;
 
-    const transactions = <TransactionsList transactions={data && data.transactions} onSelect={() => {}} />;
+    const onSelect = ({_id}) => {
+      const {pushRoute} = this.props;
+      pushRoute('/transactions/' + _id);
+    };
+
+    const transactions = (
+      <TransactionsList
+        transactions={data && data.transactions}
+        active={params && params.transaction_id}
+        onSelect={onSelect} />
+    );
 
     return (
       <DataWrapper state={this.props.transactions}>

@@ -1,7 +1,9 @@
 import * as React from 'react';
+import moment from 'moment';
 import ListItem from 'material-ui/lib/lists/list-item';
-import Avatar from 'material-ui/lib/avatar';
-import Colors from 'material-ui/lib/styles/colors';
+
+import TransactionAvatar from './TransactionAvatar';
+import KeyboardArrowRight from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-right';
 
 const smallAvatarSize = 30;
 const smallPadding = 20;
@@ -10,58 +12,42 @@ const smallStyle = {padding: smallPadding + 'px ' + smallPadding + 'px ' + (smal
 const smallDataStyle = {width: '50px'};
 const smallAvatarStyle = {};
 
-const Transaction = ({transaction, isSmall, onClick}) => {
-  let color = Colors.blue500;
-  let icon = <span />;
+const Transaction = ({transaction, isSmall, isActive, onClick}) => {
   let title = transaction.type;
 
-  const iconFontSize = isSmall ? 10 : 15;
-
   if (transaction.type === 'express') {
-    icon = <span style={{fontSize: iconFontSize}}>{transaction.data.response.status}</span>;
-
-    if (transaction.data.response.status < 300) {
-      color = Colors.green500;
-    } else if (transaction.data.response.status >= 500) {
-      color = Colors.red500;
-    } else if (transaction.data.response.status >= 400) {
-      color = Colors.yellow500;
-    }
-
     title = transaction.data.request.method + ' ' + transaction.data.request.route;
   } else if (transaction.type.toLowerCase() === 'rabbitr') {
-    icon = <span style={{fontSize: iconFontSize}}>{transaction.data.status}</span>;
-
-    if (transaction.data.status === 'ack') {
-      color = Colors.green500;
-    } else if (transaction.data.status === 'reject') {
-      color = Colors.yellow500;
-    } else if (transaction.data.status === 'error') {
-      color = Colors.red500;
-    }
-
     title = transaction.data.topic;
   }
+
+  const ts = moment(new Date(transaction.timestamp));
+  const time = <span title={transaction.timestamp}>{ts.fromNow()}</span>;
+  const subtitle = <span>{transaction.system} {time}</span>;
 
   if (isSmall) {
     return (
       <div style={smallStyle}>
-        <div style={smallAvatarStyle}>{icon}</div>
-        <div style={smallDataStyle}>{title} <span style={{float: 'right'}}>transaction.system</span></div>
+        <div style={smallAvatarStyle}>{<TransactionAvatar transaction={transaction} />}</div>
+        <div style={smallDataStyle}>{title} <span style={{float: 'right'}}>{subtitle}</span></div>
       </div>
     );
   }
   return (
     <div>
-      <ListItem primaryText={title} secondaryText={transaction.system}
-        leftAvatar={<Avatar icon={icon} backgroundColor={color} />} onClick={() => onClick && onClick(transaction)} />
+      <ListItem primaryText={title} secondaryText={subtitle}
+        leftAvatar={<TransactionAvatar transaction={transaction} />}
+        onClick={() => onClick && onClick(transaction)}
+        rightIcon={isActive ? <KeyboardArrowRight /> : null}
+        />
         {(transaction.children || []).map(child => (
-          <Transaction key={child.id} isSmall transaction={child} onClick={() => onClick && onClick(child)} />
+          <Transaction key={child.id} transaction={child} onClick={() => onClick && onClick(child)} />
         ))}
     </div>
   );
 };
 Transaction.propTypes = {
+  isActive: React.PropTypes.bool,
   isSmall: React.PropTypes.bool,
   onClick: React.PropTypes.func,
   transaction: React.PropTypes.object.isRequired,
