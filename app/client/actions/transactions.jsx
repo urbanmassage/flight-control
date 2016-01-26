@@ -5,7 +5,7 @@ function fetchTransactions(search) {
     type: FETCH_TRANSACTIONS,
     isFetch: true,
     requestKey: 'transactions-search',
-    url: '/search/transaction',
+    url: '/api/search/transaction',
     request: {
       method: 'POST',
       headers: {
