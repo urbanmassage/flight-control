@@ -7,6 +7,7 @@ import TransactionsList from '../Presenters/TransactionsList';
 import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
 import {routeActions} from 'react-router-redux';
+import JSON5 from 'json5';
 
 class Transactions extends React.Component {
   componentDidMount() {
@@ -20,11 +21,12 @@ class Transactions extends React.Component {
   }
 
   fetchTransactions(props = this.props) {
-    const {json, ...search} = props.search;
+    let {json, ...search} = props.search;
+    if (json) json = JSON5.parse(json);
     Object.keys(search).forEach(key => {
       if (search[key] == null) delete search[key];
     });
-    this.props.fetchTransactions(Object.assign(search, json));
+    this.props.fetchTransactions(Object.assign({parent: null}, search, json));
   }
 
   render() {
