@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import TextField from 'material-ui/lib/text-field';
-import {routeActions} from 'redux-simple-router';
+import {routeActions} from 'react-router-redux';
 
 @connect()
 class TransactionIDBar extends React.Component{
