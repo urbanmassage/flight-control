@@ -9,8 +9,23 @@ import RaisedButton from 'material-ui/lib/raised-button';
 
 class Transactions extends React.Component {
   componentDidMount() {
-    this.props.fetchTransactions();
+    this.fetchTransactions();
   }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.search !== this.props.search) {
+      this.fetchTransactions(nextProps);
+    }
+  }
+
+  fetchTransactions(props = this.props) {
+    const {json, ...search} = props.search;
+    Object.keys(search).forEach(key => {
+      if (search[key] == null) delete search[key];
+    });
+    this.props.fetchTransactions(Object.assign(search, json));
+  }
+
   render() {
     const {data} = this.props.transactions;
 
@@ -22,7 +37,17 @@ class Transactions extends React.Component {
       </DataWrapper>
     );
   }
+
+  static propTypes = {
+    search: React.PropTypes.object.isRequired,
+    fetchTransactions: React.PropTypes.func.isRequired,
+    pushRoute: React.PropTypes.func.isRequired,
+    transactions: React.PropTypes.object.isRequired,
+  };
 }
 
 export default
-  connect(({transactions}) => ({transactions}), {fetchTransactions})(Transactions);
+  connect(({transactions, search}) => ({transactions, search}), {
+    fetchTransactions,
+    pushRoute: routeActions.push,
+  })(Transactions);

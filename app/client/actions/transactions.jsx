@@ -1,6 +1,6 @@
 export const FETCH_TRANSACTIONS = 'FETCH_TRANSACTIONS';
 
-function fetchTransactions() {
+function fetchTransactions(search) {
   return {
     type: FETCH_TRANSACTIONS,
     isFetch: true,
@@ -8,10 +8,10 @@ function fetchTransactions() {
     url: '/search/transaction',
     request: {
       method: 'POST',
-      body: JSON.stringify({
-        parent: null,
-        relativeTime: '-60s',
-      }),
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(search),
     },
   };
 }

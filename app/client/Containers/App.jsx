@@ -1,11 +1,15 @@
 import * as React from 'react';
 import Layout from '../Presenters/Layout';
 import TransactionIDBar from './TransactionIDBar';
+import loadSearch from '../actions/load-search';
+import {connect} from 'react-redux';
 
 let devTools = null;
 
+@connect(null, {loadSearch})
 class App extends React.Component {
   componentDidMount() {
+    this.props.loadSearch();
     if (process.env.NODE_ENV === 'development') {
       // Hack to avoid mismatch in first render between server and client.
       // Devtools need window width and height to be known.
