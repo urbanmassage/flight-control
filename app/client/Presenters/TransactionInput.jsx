@@ -8,6 +8,9 @@ const TransactionInput = ({transaction}) => {
     case 'express':
     input = transaction.data.request;
     break;
+    case 'Rabbitr':
+    input = transaction.data.data;
+    break;
   }
   if (!input) return <noscript />;
 
