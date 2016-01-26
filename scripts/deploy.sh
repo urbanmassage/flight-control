@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 npm prune --production
 
 if [ -z "$DOCKER_EMAIL" ] || [ -z "$DOCKER_USER" ] || [ -z "$DOCKER_PASS" ]; then
