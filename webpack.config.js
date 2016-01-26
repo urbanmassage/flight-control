@@ -59,6 +59,10 @@ if (process.env.NODE_ENV === 'development') {
   if (process.env.HOT) {
     entry = ['webpack-hot-middleware/client', entry];
     plugins.unshift(new webpack.HotModuleReplacementPlugin());
+  } else {
+    // Extract css files
+    plugins.push(new ExtractTextPlugin('index.css'));
+    sassLoader = ExtractTextPlugin.extract('style-loader', 'css-loader!autoprefixer-loader?browsers=last 2 versions!sass-loader');
   }
 } else {
   // Cache buster
