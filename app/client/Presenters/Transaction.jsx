@@ -5,6 +5,7 @@ import ListItem from 'material-ui/lib/lists/list-item';
 import TransactionAvatar from './TransactionAvatar';
 import KeyboardArrowRight from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-right';
 import DurationString from './DurationString';
+import TimeString from './TimeString';
 
 const smallAvatarSize = 30;
 const smallPadding = 20;
@@ -22,9 +23,8 @@ const Transaction = ({transaction, isSmall, isActive, onClick}) => {
     title = transaction.data.topic;
   }
 
-  const ts = moment(new Date(transaction.timestamp));
-  const timestamp = <span title={transaction.timestamp}>{ts.fromNow()}</span>;
-  const subtitle = <span>{transaction.system} {timestamp}</span>;
+  const timestamp = <TimeString time={transaction.timestamp} />;
+  const subtitle = <span>{transaction.system} - {timestamp}</span>;
 
   if (isSmall) {
     return (

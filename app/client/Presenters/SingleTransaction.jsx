@@ -3,6 +3,7 @@ import YAML from 'json2yaml';
 
 import TransactionAvatar from './TransactionAvatar';
 import DurationString from './DurationString';
+import TimeString from './TimeString';
 
 import Card from 'material-ui/lib/card/card';
 import CardHeader from 'material-ui/lib/card/card-header';
@@ -26,11 +27,14 @@ const SingleTransaction = ({transaction, transactionChildren, onSelect}) => {
     title = transaction.data.topic;
   }
 
+  const timestamp = <TimeString time={transaction.timestamp} />;
+  const subtitle = <span>{transaction.system} - {timestamp}</span>;
+
   return (
     <Card>
       <CardHeader
         title={title}
-        subtitle={transaction.system}
+        subtitle={subtitle}
         avatar={<TransactionAvatar transaction={transaction} />}>
           <DurationString duration={transaction.time || 0} style={{
             fontSize: 15,
