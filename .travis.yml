@@ -19,3 +19,4 @@ deploy:
     node: '4.1'
     branch: '*'
   script: scripts/deploy.sh
+  skip_cleanup: true
