@@ -9,12 +9,12 @@ if [ -z "$DOCKER_EMAIL" ] || [ -z "$DOCKER_USER" ] || [ -z "$DOCKER_PASS" ]; the
   exit 1
 fi
 
-docker build -t $TRAVIS_REPO_SLUG .
+docker build --no-cache -t "$TRAVIS_REPO_SLUG" .
 
 docker tag "$TRAVIS_REPO_SLUG" "${TRAVIS_REPO_SLUG}:${TRAVIS_BRANCH}"
 docker tag "$TRAVIS_REPO_SLUG" "${TRAVIS_REPO_SLUG}:${TRAVIS_COMMIT}"
 docker tag "$TRAVIS_REPO_SLUG" "${TRAVIS_REPO_SLUG}:travis-${TRAVIS_BUILD_NUMBER}"
 
-docker push $TRAVIS_REPO_SLUG
+docker push "$TRAVIS_REPO_SLUG"
 
 docker images
