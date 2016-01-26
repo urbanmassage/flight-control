@@ -4,6 +4,7 @@ import ListItem from 'material-ui/lib/lists/list-item';
 
 import TransactionAvatar from './TransactionAvatar';
 import KeyboardArrowRight from 'material-ui/lib/svg-icons/hardware/keyboard-arrow-right';
+import DurationString from './DurationString';
 
 const smallAvatarSize = 30;
 const smallPadding = 20;
@@ -22,8 +23,8 @@ const Transaction = ({transaction, isSmall, isActive, onClick}) => {
   }
 
   const ts = moment(new Date(transaction.timestamp));
-  const time = <span title={transaction.timestamp}>{ts.fromNow()}</span>;
-  const subtitle = <span>{transaction.system} {time}</span>;
+  const timestamp = <span title={transaction.timestamp}>{ts.fromNow()}</span>;
+  const subtitle = <span>{transaction.system} {timestamp}</span>;
 
   if (isSmall) {
     return (
@@ -38,10 +39,13 @@ const Transaction = ({transaction, isSmall, isActive, onClick}) => {
       <ListItem primaryText={title} secondaryText={subtitle}
         leftAvatar={<TransactionAvatar transaction={transaction} />}
         onClick={() => onClick && onClick(transaction)}
-        rightIcon={isActive ? <KeyboardArrowRight /> : null}
-        />
+        rightIcon={
+          isActive ?
+            <KeyboardArrowRight /> :
+            <DurationString duration={transaction.time || 0} style={{fontSize: 12}} />
+        } />
         {(transaction.children || []).map(child => (
-          <Transaction key={child.id} transaction={child} onClick={() => onClick && onClick(child)} />
+          <Transaction key={child.id} isSmall transaction={child} onClick={() => onClick && onClick(child)} />
         ))}
     </div>
   );

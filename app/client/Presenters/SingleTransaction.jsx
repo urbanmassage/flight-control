@@ -2,6 +2,7 @@ import * as React from 'react';
 import YAML from 'json2yaml';
 
 import TransactionAvatar from './TransactionAvatar';
+import DurationString from './DurationString';
 
 import Card from 'material-ui/lib/card/card';
 import CardHeader from 'material-ui/lib/card/card-header';
@@ -30,7 +31,15 @@ const SingleTransaction = ({transaction, transactionChildren, onSelect}) => {
       <CardHeader
         title={title}
         subtitle={transaction.system}
-        avatar={<TransactionAvatar transaction={transaction} />}/>
+        avatar={<TransactionAvatar transaction={transaction} />}>
+          <DurationString duration={transaction.time || 0} style={{
+            fontSize: 15,
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            margin: 15,
+          }} />
+        </CardHeader>
       <CardText>
         {transactionChildren ? (
           transactionChildren.map(child => {
