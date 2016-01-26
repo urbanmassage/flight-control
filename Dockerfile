@@ -1,1 +1,1 @@
-FROM urbanmassage/docker-slim-node-forever
+FROM urbanmassage/docker-gyp-node-forever
