@@ -7,6 +7,9 @@ if [ -z "$DOCKER_EMAIL" ] || [ -z "$DOCKER_USER" ] || [ -z "$DOCKER_PASS" ]; the
   exit 1
 fi
 
+echo "[deploy] logging in to docker hub"
+docker login -e "$DOCKER_EMAIL" -u "$DOCKER_USER" -p "$DOCKER_PASS"
+
 echo "[deploy] removing dev deps"
 npm prune --production
 
