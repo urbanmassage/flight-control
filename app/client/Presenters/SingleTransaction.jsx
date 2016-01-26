@@ -5,6 +5,9 @@ import TransactionAvatar from './TransactionAvatar';
 import DurationString from './DurationString';
 import TimeString from './TimeString';
 
+import TransactionInput from './TransactionInput';
+import TransactionOutput from './TransactionOutput';
+
 import Card from 'material-ui/lib/card/card';
 import CardHeader from 'material-ui/lib/card/card-header';
 import CardText from 'material-ui/lib/card/card-text';
@@ -45,6 +48,7 @@ const SingleTransaction = ({transaction, transactionChildren, onSelect}) => {
           }} />
         </CardHeader>
       <CardText>
+        <TransactionInput transaction={transaction} />
         {transactionChildren ? (
           transactionChildren.map(child => {
             let {type, system} = child.data;
@@ -58,6 +62,7 @@ const SingleTransaction = ({transaction, transactionChildren, onSelect}) => {
             return <div key={child._id}>{content}</div>;
           })
         ) : null}
+        <TransactionOutput transaction={transaction} />
       </CardText>
     </Card>
   )
