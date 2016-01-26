@@ -16,4 +16,5 @@ deploy:
   provider: script
   on:
     node: '4.1'
+    branch: '*'
   script: scripts/deploy.sh
