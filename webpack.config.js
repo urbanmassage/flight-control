@@ -45,7 +45,7 @@ var output = {
   filename: 'index.js',
 };
 
-var lessLoader = 'style-loader!css-loader!autoprefixer-loader?browsers=last 2 versions!less-loader';
+var sassLoader = 'style-loader!css-loader!autoprefixer-loader?browsers=last 2 versions!sass-loader';
 var devtool = 'source-map';
 
 if (process.env.NODE_ENV === 'production') {
@@ -67,7 +67,7 @@ if (process.env.NODE_ENV === 'development') {
 
   // Extract css files
   plugins.push(new ExtractTextPlugin('[name]-[chunkhash].css'));
-  lessLoader = ExtractTextPlugin.extract('style-loader', 'css-loader!autoprefixer-loader?browsers=last 2 versions!less-loader');
+  sassLoader = ExtractTextPlugin.extract('style-loader', 'css-loader!autoprefixer-loader?browsers=last 2 versions!sass-loader');
 }
 
 // make handlebars an external. i.e. don't include it in bundle.
@@ -98,8 +98,8 @@ module.exports = {
         exclude: /(node_modules|bower_components)/,
         loader: 'babel',
       }, {
-        test: /\.(css|less)$/,
-        loader: lessLoader,
+        test: /\.(css|scss|sass)$/,
+        loader: sassLoader,
       }, {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'url-loader?limit=10000&mimetype=application/font-woff',

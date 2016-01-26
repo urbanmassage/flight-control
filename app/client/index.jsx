@@ -11,6 +11,7 @@ require('react-tap-event-plugin')();
 
 window.React = React;
 
+import './index.scss';
 import 'normalize.css';
 import 'flexboxgrid';
 
