@@ -1,0 +1,40 @@
+general:
+  artifacts:
+    - "coverage"
+
+machine:
+  services:
+    - mongodb
+    - docker
+  environment:
+    NODE_ENV: testing
+    DEBUG: app:*
+    REPO: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+
+test:
+  override:
+    - npm test
+
+dependencies:
+  cache_directories:
+    - "node_modules"
+  pre:
+    - curl https://raw.githubusercontent.com/remind101/docker-build/master/docker-build > /home/ubuntu/bin/docker-build
+    - chmod +x /home/ubuntu/bin/docker-build
+    - wget https://gist.githubusercontent.com/louy/3aba7749a3b6289ab240/raw/0a95cc2750fcac385612a8e5263644b620117e22/git-restore-mtime.sh > /home/ubuntu/bin/git-restore-mtime
+    - chmod +x /home/ubuntu/bin/git-restore-mtime
+  override:
+    - npm install
+    - npm prune
+    - git-restore-mtime
+
+deployment:
+  hub:
+    branch: /.*/
+    commands:
+      - NODE_ENV=production npm run build
+      - npm prune --production
+      - docker-build build
+      - docker tag "$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME" "${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:circle-${CIRCLE_BUILD_NUM}"
+      - docker-build push
+      - docker images
