@@ -5,7 +5,7 @@ import routes from './routes';
 import {Router, match} from 'react-router';
 import createBrowserHistory from 'history/lib/createBrowserHistory';
 import {applyMiddleware} from 'redux';
-import {syncHistory} from 'redux-simple-router';
+import {syncHistory} from 'react-router-redux';
 
 require('react-tap-event-plugin')();
 

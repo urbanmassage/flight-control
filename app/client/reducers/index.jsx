@@ -3,7 +3,7 @@ import title from './title';
 import transaction from './transaction';
 import transactions from './transactions';
 import transactionChildren from './transaction-children';
-import {routeReducer as routing} from 'redux-simple-router';
+import {routeReducer as routing} from 'react-router-redux';
 import search from './search';
 
 const rootReducer = combineReducers({

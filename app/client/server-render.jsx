@@ -9,7 +9,7 @@ import routes from './routes';
 import {match, RoutingContext} from 'react-router';
 import createMemoryHistory from 'history/lib/createMemoryHistory';
 import {applyMiddleware} from 'redux';
-import {syncHistory} from 'redux-simple-router';
+import {syncHistory} from 'react-router-redux';
 
 /* eslint-disable no-sync */
 import {readFileSync} from 'fs';

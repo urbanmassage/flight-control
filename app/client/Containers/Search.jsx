@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import Paper from 'material-ui/lib/paper';
 import TextField from 'material-ui/lib/text-field';
 import RaisedButton from 'material-ui/lib/raised-button';
-import {routeActions} from 'redux-simple-router';
+import {routeActions} from 'react-router-redux';
 import SelectField from 'material-ui/lib/select-field';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import updateSearch from '../actions/update-search';
