@@ -2,12 +2,13 @@
 
 set -e
 
-npm prune --production
-
 if [ -z "$DOCKER_EMAIL" ] || [ -z "$DOCKER_USER" ] || [ -z "$DOCKER_PASS" ]; then
   echo "Please set DOCKER_EMAIL, DOCKER_USER and DOCKER_PASS first"
   exit 1
 fi
+
+echo "removing dev deps"
+npm prune --production
 
 docker build --no-cache -t "$TRAVIS_REPO_SLUG" .
 
