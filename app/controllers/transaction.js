@@ -1,4 +1,5 @@
 var async = require('async');
+var debug = require('debug')('transaction');
 
 module.exports = {
 	controller: function(app) {
@@ -8,7 +9,7 @@ module.exports = {
 
 			transaction.save(function(err) {
 				if(err) {
-					console.log('Failed to store transaction', err);
+					debug('Failed to store transaction', err);
 					return res.status(500).send('ERR');
 				}
 
