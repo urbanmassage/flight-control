@@ -10,7 +10,11 @@ import updateSearch from '../actions/update-search';
 
 @connect(({search}) => ({search}))
 class Search extends React.Component {
-  state = {};
+  state = {
+    json: `{
+  parent: null
+}`,
+  };
   linkState(key) {
     return {
       value: this.state[key],

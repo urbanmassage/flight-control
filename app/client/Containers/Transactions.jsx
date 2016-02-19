@@ -26,7 +26,7 @@ class Transactions extends React.Component {
     Object.keys(search).forEach(key => {
       if (search[key] == null) delete search[key];
     });
-    this.props.fetchTransactions(Object.assign({parent: null}, search, json));
+    this.props.fetchTransactions(Object.assign({}, search, json));
   }
 
   render() {
