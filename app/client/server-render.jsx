@@ -51,6 +51,13 @@ function renderApp(req, res, next) {
           page = page.replace(/<link rel="stylesheet"[^>]*>/, '');
         }
 
+        if (process.env.NODE_ENV === 'production') {
+          var manifest = require('../../public/client/manifest.json');
+          page = page
+            .replace('/client/index.js', manifest.main.js)
+            .replace('/client/index.css', manifest.main.css);
+        }
+
         res.send(page);
       } catch (err) { next(err); }
     } else {
