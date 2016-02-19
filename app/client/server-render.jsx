@@ -16,6 +16,8 @@ import {readFileSync} from 'fs';
 const template = readFileSync(__dirname + '/index.html', 'utf8');
 /* eslint-enable no-sync */
 
+const {NODE_ENV} = process.env;
+
 function renderApp(req, res, next) {
   match({routes, location: req.url}, (error, redirectLocation, renderProps) => {
     if (error) {
@@ -51,7 +53,10 @@ function renderApp(req, res, next) {
           page = page.replace(/<link rel="stylesheet"[^>]*>/, '');
         }
 
-        if (process.env.NODE_ENV === 'production') {
+        if (
+          NODE_ENV === 'staging' ||
+          NODE_ENV === 'production'
+        ) {
           var manifest = require('../../public/client/manifest.json');
           page = page
             .replace('/client/index.js', manifest.main.js)
