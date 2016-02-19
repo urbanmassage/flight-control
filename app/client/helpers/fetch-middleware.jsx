@@ -35,10 +35,10 @@ const fetchMiddleware = ({dispatch, getState}) =>
             return data;
           })).then(data => {
             isLoadingMap[requestKey] = false;
-            dispatch({type, status: 'success', data, request, url, args});
+            setTimeout(() => dispatch({type, status: 'success', data, request, url, args}), 0);
           }, error => {
             isLoadingMap[requestKey] = false;
-            dispatch({type, status: 'error', error, request, url, args});
+            setTimeout(() => dispatch({type, status: 'error', error, request, url, args}), 0);
           });
         })() :
         next(action);
