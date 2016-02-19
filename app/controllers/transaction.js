@@ -1,11 +1,12 @@
 var async = require('async');
 var debug = require('debug')('transaction');
+var sanitize = require('../lib/sanitize');
 
 module.exports = {
 	controller: function(app) {
 		// stores a transaction trace
 		app.post('/transaction', app.middleware.get(['json']), function(req, res) {
-			var transaction = req.mongo.models.transaction(req.body);
+			var transaction = req.mongo.models.transaction(sanitize(req.body));
 
 			transaction.save(function(err) {
 				if(err) {
@@ -67,6 +68,6 @@ module.exports = {
 					children: out
 				});
 			})
-		});	
+		});
 	}
 };

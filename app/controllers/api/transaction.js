@@ -1,6 +1,8 @@
 var async = require('async');
 var hata = require('hata');
 
+var desanitize = require('../../lib/desanitize');
+
 module.exports = {
   controller: function (app) {
     app.get('/api/transaction/:id', app.middleware.get(['json']), function (req, res, next) {
@@ -12,7 +14,7 @@ module.exports = {
           return next(hata(404));
         }
 
-        res.send({ transaction: transaction });
+        res.send({ transaction: desanitize(transaction) });
       });
     });
     app.get('/api/transaction/:id/children', app.middleware.get(['json']), function (req, res, next) {
@@ -64,7 +66,7 @@ module.exports = {
           });
 
           res.send({
-            children: children,
+            children: desanitize(children),
           });
         })
       });

@@ -1,3 +1,5 @@
+var desanitize = require('../lib/desanitize');
+
 module.exports = {
 	controller: function(app) {
 		app.post('/search/transaction', app.middleware.get(['json']), function(req, res) {
@@ -44,7 +46,7 @@ module.exports = {
 
 				res.status(200).send({
 					status: 'OK',
-					transactions: transactions
+					transactions: desanitize(transactions),
 				});
 			});
 		})

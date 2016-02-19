@@ -1,3 +1,5 @@
+var desanitize = require('../../lib/desanitize');
+
 module.exports = {
   controller: function(app) {
     app.post('/api/search/transaction', app.middleware.get(['json']), function(req, res, next) {
@@ -21,7 +23,7 @@ module.exports = {
           multiplier = 86400;
         }
 
-        if(multiplier > 0) {
+        if (multiplier > 0) {
           var time = Math.round(new Date().getTime() / 1000) - (multiplier * amount);
 
           search.timestamp = {
@@ -39,7 +41,7 @@ module.exports = {
 
         res.send({
           status: 'OK',
-          transactions: transactions
+          transactions: desanitize(transactions),
         });
       });
     })

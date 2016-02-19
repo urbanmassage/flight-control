@@ -1,8 +1,10 @@
+var sanitize = require('../lib/sanitize');
+
 module.exports = {
 	controller: function(app) {
 		// stores a log entry
 		app.post('/log', app.middleware.get(['json']), function(req, res) {
-			var log = req.mongo.models.log(req.body);
+			var log = req.mongo.models.log(sanitize(req.body));
 
 			log.save(function(err) {
 				if(err) {
