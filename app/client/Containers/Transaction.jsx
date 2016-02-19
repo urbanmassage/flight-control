@@ -53,7 +53,7 @@ export default
   connect(({transaction, transactionChildren}) => ({transaction, transactionChildren}), {
     fetchTransaction,
     fetchTransactionChildren,
-    onSelect: ({_id}) => routeActions.push('/transactions/' + _id),
+    onSelect: ({id}) => routeActions.push('/transactions/' + id),
   }, ({transaction, transactionChildren}, dispatchProps, ownProps) => {
     const {transaction_id} = ownProps.params;
     return Object.assign({}, ownProps, dispatchProps, {

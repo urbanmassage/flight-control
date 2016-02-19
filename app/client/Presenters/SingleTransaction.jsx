@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Link} from 'react-router';
 
 import TransactionAvatar from './TransactionAvatar';
 import DurationString from './DurationString';
@@ -46,6 +47,8 @@ const SingleTransaction = ({transaction, transactionChildren, onSelect}) => {
             right: 0,
             margin: 15,
           }} />
+          &nbsp;
+          {transaction.parent ? <Link to={`/transactions/${transaction.parent}`}>parent</Link> : null}
         </CardHeader>
       <CardText>
         <TransactionInput transaction={transaction} />

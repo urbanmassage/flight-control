@@ -6,7 +6,7 @@ var desanitize = require('../../lib/desanitize');
 module.exports = {
   controller: function (app) {
     app.get('/api/transaction/:id', app.middleware.get(['json']), function (req, res, next) {
-      req.mongo.models.transaction.findById(req.params.id, function (err, transaction) {
+      req.mongo.models.transaction.findOne({id: req.params.id}, function (err, transaction) {
         if (err) {
           return next(err);
         }
@@ -18,7 +18,7 @@ module.exports = {
       });
     });
     app.get('/api/transaction/:id/children', app.middleware.get(['json']), function (req, res, next) {
-      req.mongo.models.transaction.findById(req.params.id, function (err, transaction) {
+      req.mongo.models.transaction.findOne({id: req.params.id}, function (err, transaction) {
         if (err) {
           return next(err);
         }

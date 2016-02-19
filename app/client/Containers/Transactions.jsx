@@ -33,9 +33,9 @@ class Transactions extends React.Component {
     const {data} = this.props.transactions;
     const {params} = this.props;
 
-    const onSelect = ({_id}) => {
+    const onSelect = ({id}) => {
       const {pushRoute} = this.props;
-      pushRoute('/transactions/' + _id);
+      pushRoute('/transactions/' + id);
     };
 
     const transactions = (
