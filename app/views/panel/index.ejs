@@ -35,6 +35,7 @@
 		</nav>
 
 		<div class="container" style="margin-top: 70px;">
+			<p>Logged in as <b><%= Session.username %></b> &nbsp;&bull;&nbsp; <a href="/logout">Logout</a></p>
 
 			<div style="padding-bottom: 20px;" class="clearfix">
 				<p>Stick a load of JSON in here to search</p>
@@ -62,7 +63,7 @@
 					<!--<a href="#" class="btn btn-default"><span class="glyphicon glyphicon-triangle-bottom" style="top: 2px;"></span>&nbsp; Open Search</a>-->
 
 					<div class="pull-right">
-						<a href="#" class="btn btn-warning" id="clearSearchButton">Clear</a>&nbsp; 
+						<a href="#" class="btn btn-warning" id="clearSearchButton">Clear</a>&nbsp;
 						<a href="#" class="btn btn-success" id="submitSearchButton">Submit Search</a>
 					</div>
 				</div>
@@ -151,7 +152,7 @@
 							});
 						}
 					});
-				},	
+				},
 
 				onChange: function(e) {
 
@@ -177,9 +178,9 @@
 				}
 			});*/
 
-			
+
 			var kLongJSONPreStyle = {
-				fontSize: '11px', 
+				fontSize: '11px',
 				marginRight: '220px',
 				marginTop: '4px',
 				marginBottom: '0px'
@@ -206,14 +207,14 @@
 					);
 				}
 			});
-	
+
 
 			var kShortJSONStyle = {
 				cursor: 'pointer',
-				overflow: 'hidden', 
+				overflow: 'hidden',
 				height: '18px',
 				paddingTop: '1px',
-				fontSize: '10px', 
+				fontSize: '10px',
 				marginRight: '190px'
 			};
 			var ShortJSON = React.createClass({
@@ -270,7 +271,7 @@
 
 			var kStaticChildStyle = {
 				color: '#888',
-				fontSize: '11px', 
+				fontSize: '11px',
 				padding: '1px 5px 2px 5px'
 			};
 			var StaticChild = React.createClass({
@@ -412,13 +413,13 @@
 
 						if(transaction.data.response.status < 300) {
 							labelClass += ' label-success';
-						} 
+						}
 						else if(transaction.data.response.status >= 500) {
 							labelClass += ' label-danger';
-						} 
+						}
 						else if(transaction.data.response.status >= 400) {
 							labelClass += ' label-warning';
-						} 
+						}
 
 						description = ' ' + transaction.data.request.method + ' ' + transaction.data.request.route;
 					}
@@ -427,13 +428,13 @@
 
 						if(transaction.data.status == 'ack') {
 							labelClass += ' label-success';
-						} 
+						}
 						else if(transaction.data.status == 'reject') {
 							labelClass += ' label-danger';
-						} 
+						}
 						else if(transaction.data.status == 'error') {
 							labelClass += ' label-warning';
-						} 
+						}
 
 						description = ' ' + transaction.data.topic;
 					}
@@ -469,7 +470,7 @@
 
 							for(var i=0; i<component.state.children.length; i++) {
 								var child = component.state.children[i];
-								
+
 								if(child.type == 'log') {
 									children['c_' + child._id] = LogFactory({
 										log: child.data,

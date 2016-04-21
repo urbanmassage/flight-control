@@ -19,6 +19,8 @@ function setup() {
   server.use('/client/*', function (req, res, next) { next(hata(404)); });
   server.get('/favicon.ico', function (req, res) { res.end(); });
 
+  server.use(require('cookie-parser')());
+
   server.use(function (req, res, next) {
     res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.header('Pragma', 'no-cache');
@@ -39,6 +41,16 @@ function setup() {
   server.use(require('./app/lib/mongo').express);
 
   server.start();
+
+  server.use(function (error, req, res, next) {
+    console.error(error);
+
+    var output = JSON.parse(JSON.stringify(error));
+    output.name = error.name;
+    output.message = error.message;
+
+    res.status(500).send(output);
+  });
 
   server.use(function (req, res, next) {
     require('./app/client/server-render')(req, res, next);

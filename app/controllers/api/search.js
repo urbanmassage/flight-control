@@ -2,7 +2,7 @@ var desanitize = require('../../lib/desanitize');
 
 module.exports = {
   controller: function(app) {
-    app.post('/api/search/transaction', app.middleware.get(['json']), function(req, res, next) {
+    app.post('/api/search/transaction', app.middleware.get(['session', 'json']), function(req, res, next) {
       var search = req.body || {};
 
       if (typeof(search.relativeTime) !== 'undefined') {

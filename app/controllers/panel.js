@@ -1,7 +1,9 @@
 module.exports = {
 	controller: function(app) {
-		app.get('/panel', function(req, res) {
-			res.render('panel/index');
+		app.get('/panel', app.middleware.get(['session']), function(req, res) {
+			res.render('panel/index', {
+				Session: req.session,
+			});
 		});
 	}
 };
