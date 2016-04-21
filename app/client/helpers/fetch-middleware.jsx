@@ -30,7 +30,9 @@ const fetchMiddleware = ({dispatch, getState}) =>
           dispatch({type, status: 'loading', request, url, args});
           isLoadingMap[requestKey] = true;
 
-          return fetch(url, request).then(response => response.json().then(data => {
+          return fetch(url, Object.assign({}, request, {
+            credentials: 'same-origin'
+          })).then(response => response.json().then(data => {
             if (response.status >= 400) throw Object.assign(new Error('Got an error from the server'), data);
             return data;
           })).then(data => {
