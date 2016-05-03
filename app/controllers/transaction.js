@@ -38,8 +38,6 @@ module.exports = {
 					});
 				}
 
-				console.log(results);
-
 				var out = [];
 
 				for(var i=0; i<results.transactions.length; i++) {
