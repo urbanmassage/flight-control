@@ -25,10 +25,10 @@ class App extends React.Component {
         {devTools}
         <Layout>
           <div className="row">{[
-            (<div className="col-sm-6 col-md-4 animated" key={sidebar.key}>
+            (<div className="col-sm-6 col-md-4 col-xs-12 animated" key={sidebar.key}>
               {React.cloneElement(sidebar, {key: sidebar.key})}
             </div>),
-            (<div className="col-sm-6 col-md-8 animated" key={main.key}>
+            (<div className="col-sm-6 col-md-8 col-xs-12 animated" key={main.key}>
               {React.cloneElement(main, {key: main.key})}
             </div>),
           ]}</div>

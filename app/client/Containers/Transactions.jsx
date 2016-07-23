@@ -10,10 +10,6 @@ import {routeActions} from 'react-router-redux';
 import JSON5 from 'json5';
 
 class Transactions extends React.Component {
-  componentDidMount() {
-    this.fetchTransactions();
-  }
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.search !== this.props.search) {
       this.fetchTransactions(nextProps);

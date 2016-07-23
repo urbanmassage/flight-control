@@ -8,13 +8,11 @@ import SelectField from 'material-ui/lib/select-field';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import updateSearch from '../actions/update-search';
 
-@connect(({search}) => ({search}))
+const RELATIVE_TIMES = ['-30s', '-1m', '-2m', '-5m', '-10m', '-15m', '-30m', '-45m', '-1h', '-2h', '-6h', '-12h', '-1d', '-2d', '-7d'];
+
+@connect(({search}) => ({search}), {updateSearch})
 class Search extends React.Component {
-  state = {
-    json: `{
-  parent: null
-}`,
-  };
+  state = {};
   linkState(key) {
     return {
       value: this.state[key],
@@ -55,10 +53,10 @@ class Search extends React.Component {
   }
   onChangeSearch(payload) {
     const {dispatch} = this.props;
-    dispatch(updateSearch(payload));
+    this.props.updateSearch(payload);
   }
   render() {
-    const {search, doSearch} = this.props;
+    const {search} = this.props;
     return (
       <Paper zDepth={1} style={{padding: 20}}>
         <h2>Search</h2>
@@ -77,7 +75,7 @@ class Search extends React.Component {
               value={search.relativeTime}
               onChange={(event, index, relativeTime) => this.onChangeSearch({relativeTime})}
               >{
-              ['-30s', '-1m', '-2m', '-5m', '-10m', '-15m', '-30m', '-45m', '-1h', '-2h', '-6h', '-12h', '-1d', '-2d', '-7d']
+              RELATIVE_TIMES
                 .map(v => (
                   <MenuItem key={v} value={v} primaryText={v} />
                 ))

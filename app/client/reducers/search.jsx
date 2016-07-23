@@ -4,15 +4,18 @@ import {LOAD_SEARCH} from '../actions/load-search';
 const KEY = 'search';
 
 function set(value) {
-  if (value) {
-    localStorage.setItem(KEY, JSON.stringify(value));
-  } else {
-    localStorage.removeItem(KEY);
+  if (typeof localStorage !== 'undefined') {
+    if (value) {
+      localStorage.setItem(KEY, JSON.stringify(value));
+    } else {
+      localStorage.removeItem(KEY);
+    }
   }
   return value;
 }
 
 function get(_default = null) {
+  if (typeof localStorage === 'undefined') { return _default; }
   const value = localStorage.getItem(KEY);
   if (!value) return _default;
   return JSON.parse(value);
@@ -20,6 +23,9 @@ function get(_default = null) {
 
 const DEFAULT = {
   relativeTime: '-30s',
+  json: `{
+  parent: null
+}`,
 };
 
 function searchReducer(state = {}, action) {
