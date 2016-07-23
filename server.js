@@ -12,10 +12,12 @@ var app = easyServer({
   port: process.env.PORT || 1984,
   controllers: './app/controllers',
   middleware: './app/middleware',
-  debug: console.log,
+  debug: require('debug')('server'),
   autoStart: false,
   cors: true,
 });
+
+var cyan = require('chalk').cyan;
 
 app.set('view engine', 'ejs');
 app.set('views', 'app/views');
@@ -53,12 +55,14 @@ app.use(require('cookie-parser')());
 
 app.use(require('./app/lib/mongo').express);
 
-app.start();
+var server = app.start();
 
 app.use(function (req, res, next) {
   require('./app/client/server-render')(req, res, next);
 });
 
+// Protect everything else
+app.use(app.middleware.get('session'));
 app.use(function (error, req, res, next) {
   console.error(error);
 
@@ -68,3 +72,10 @@ app.use(function (error, req, res, next) {
 
   res.status(500).send(output);
 });
+
+if (process.env.NODE_ENV === 'development') {
+  console.log(
+    'FlightControl server is listening on ' +
+    cyan('http://127.0.0.1:' + server.address().port)
+  );
+}
