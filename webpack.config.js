@@ -8,8 +8,6 @@ var Assets = require('assets-webpack-plugin');
 var Clean = require('clean-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-require('es6-promise').polyfill();
-
 // definePlugin takes raw strings and inserts them, so you can put strings of JS if you want.
 var definePlugin = new webpack.DefinePlugin({
   'process.env': {
