@@ -35,7 +35,9 @@
 		</nav>
 
 		<div class="container" style="margin-top: 70px;">
+			<% if (Session) { %>
 			<p>Logged in as <b><%= Session.username %></b> &nbsp;&bull;&nbsp; <a href="/logout">Logout</a></p>
+			<% } %>
 
 			<div style="padding-bottom: 20px;" class="clearfix">
 				<p>Stick a load of JSON in here to search</p>
