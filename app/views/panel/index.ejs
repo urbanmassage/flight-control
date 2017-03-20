@@ -229,7 +229,7 @@
 				render: function() {
 					var component = this;
 
-					var json = JSON.stringify(component.props.data);
+					var json = JSON.stringify(component.props.data.data);
 
 					var style = kShortJSONStyle;
 
@@ -457,7 +457,7 @@
 						}
 						else {*/
 							info = ExpandableJSONFactory({
-								data: transaction.data
+								data: transaction
 							});
 						//}
 
@@ -481,7 +481,7 @@
 								}
 								else if(child.type == 'transaction') {
 									children['c_' + child._id] = TransactionFactory({
-										transaction: child.data,
+										transaction: child,
 										level: (component.props.level || 0) + 1
 									});
 								}
