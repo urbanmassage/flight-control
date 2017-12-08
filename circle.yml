@@ -12,7 +12,7 @@ machine:
     NODE_ENV: testing
     DEBUG: app:*
     REPO: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
-    PROJECT_ID: massage_shared
+    PROJECT_ID: massage-shared
 
 test:
   override:
