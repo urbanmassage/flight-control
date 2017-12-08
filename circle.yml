@@ -12,6 +12,7 @@ machine:
     NODE_ENV: testing
     DEBUG: app:*
     REPO: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+    PROJECT_ID: massage_shared
 
 test:
   override:
@@ -25,6 +26,10 @@ dependencies:
     - chmod +x /home/ubuntu/bin/docker-build
     - wget https://gist.githubusercontent.com/louy/3aba7749a3b6289ab240/raw/0a95cc2750fcac385612a8e5263644b620117e22/git-restore-mtime.sh > /home/ubuntu/bin/git-restore-mtime
     - chmod +x /home/ubuntu/bin/git-restore-mtime
+    - echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
+    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update
+    - sudo /opt/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
+    - sudo /opt/google-cloud-sdk/bin/gcloud config set project $PROJECT_ID
   override:
     - npm install
     - npm prune
@@ -40,3 +45,5 @@ deployment:
       - docker tag "$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME" "${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:circle-${CIRCLE_BUILD_NUM}"
       - docker-build push
       - docker images
+      - docker tag "$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME" "gcr.io/${PROJECT_ID}/${CIRCLE_PROJECT_REPONAME}:circle-${CIRCLE_BUILD_NUM}"
+      - sudo /opt/google-cloud-sdk/bin/gcloud docker -- push "gcr.io/${PROJECT_ID}/${CIRCLE_PROJECT_REPONAME}:circle-${CIRCLE_BUILD_NUM}"
