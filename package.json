@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "test": "mocha",
+    "test": "NODE_ENV=test mocha 'app/**/*.spec.js'",
     "build": "gulp",
     "start": "node server.js",
     "start-dev": "gulp server"
