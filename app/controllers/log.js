@@ -11,7 +11,7 @@ module.exports = {
 		app.post('/log', app.middleware.get(['json']), function(req, res) {
 			var logPayload = hidePasswords(
 				sanitize(req.body),
-				passwordPaths,
+				passwordPaths
 			);
 
 			var log = req.mongo.models.log(logPayload);
