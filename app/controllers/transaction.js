@@ -23,7 +23,7 @@ module.exports = {
 		app.post('/transaction', app.middleware.get(['json']), function(req, res) {
 			var transactionPayload = hidePasswords(
 				sanitize(req.body),
-				passwordPaths,
+				passwordPaths
 			);
 
 			var transaction = req.mongo.models.transaction(transactionPayload);
