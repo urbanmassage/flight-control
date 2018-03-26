@@ -28,7 +28,7 @@ spec:
               key: redis_url
         imagePullPolicy: Always
         ports:
-        - containerPort: #{port_number}
+        - containerPort: 80
 ---
 kind: Service
 apiVersion: v1
