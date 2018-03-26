@@ -1,0 +1,44 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: flight-control
+  namespace: assetra
+spec:
+  replicas: #{replicas}
+  template:
+    metadata:
+      labels:
+        app: flight-control
+    spec:
+      containers:
+      - name: flight-control
+        image: gcr.io/massage-shared/flight-control:#{build_number}
+        env:
+        - name: NODE_ENV
+          value: #{node_env}
+        - name: MONGO_URL
+          valueFrom:
+            secretKeyRef:
+              name: flight-control
+              key: mongo_url
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: flight-control
+              key: redis_url
+        imagePullPolicy: Always
+        ports:
+        - containerPort: #{port_number}
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: flight-control-service
+  namespace: assetra
+spec:
+  selector:
+    app: flight-control
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80

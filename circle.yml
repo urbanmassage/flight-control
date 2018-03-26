@@ -13,6 +13,8 @@ machine:
     DEBUG: app:*
     REPO: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
     PROJECT_ID: massage-shared
+    BUILD_NO: $CIRCLE_BUILD_NUM.0.0
+    OCTOPUS_BASE: http://octopus.shared-eu.gc.urbangroup.tech
 
 test:
   override:
@@ -42,8 +44,6 @@ deployment:
       - NODE_ENV=production npm run build
       - npm prune --production
       - docker-build build
-      - docker tag "$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME" "${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}:circle-${CIRCLE_BUILD_NUM}"
-      - docker-build push
-      - docker images
-      - docker tag "$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME" "gcr.io/${PROJECT_ID}/${CIRCLE_PROJECT_REPONAME}:circle-${CIRCLE_BUILD_NUM}"
-      - sudo /opt/google-cloud-sdk/bin/gcloud docker -- push "gcr.io/${PROJECT_ID}/${CIRCLE_PROJECT_REPONAME}:circle-${CIRCLE_BUILD_NUM}"
+      - docker tag "$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME" "gcr.io/${PROJECT_ID}/${CIRCLE_PROJECT_REPONAME}:${BUILD_NO}"
+      - sudo /opt/google-cloud-sdk/bin/gcloud docker -- push "gcr.io/${PROJECT_ID}/${CIRCLE_PROJECT_REPONAME}:${BUILD_NO}"
+      - curl https://raw.githubusercontent.com/urbanmassage/gist/master/create_octopus_release.sh | bash
