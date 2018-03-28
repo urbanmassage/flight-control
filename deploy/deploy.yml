@@ -4,6 +4,7 @@ metadata:
   name: flight-control
   namespace: assetra
 spec:
+  revisionHistoryLimit: 2
   replicas: #{replicas}
   template:
     metadata:
