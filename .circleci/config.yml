@@ -1,0 +1,55 @@
+version: 2
+jobs:
+  build_release:
+    working_directory: ~/urbanmassage
+    docker:
+      - image: sharpn/node-gcloud:node6
+        environment:
+          - GOOGLE_APPLICATION_CREDENTIALS: /etc/gcloud-service-key.json
+      - image: mongo:2.6.8
+        command: [--smallfiles]
+    environment: 
+      PROJECT_ID: massage-shared
+      OCTOPUS_BASE: octopus.shared-eu.gc.urbangroup.tech
+    steps:
+      - setup_remote_docker
+      - checkout
+      - run:
+          echo 'export BUILD_NO=${CIRCLE_BUILD_NUM}.0.0' >> $BASH_ENV
+      - run:
+          name: Setup GCloud
+          command: |
+            echo $GCLOUD_SERVICE_KEY | base64 --decode --ignore-garbage > ${HOME}/gcloud-service-key.json
+            gcloud auth activate-service-account --key-file ${HOME}/gcloud-service-key.json
+            gcloud config set project $PROJECT_ID
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Install Dependencies
+          command: |
+            npm install
+            npm prune
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Build
+          command: |
+            npm run build
+            docker build -t gcr.io/${PROJECT_ID}/${CIRCLE_PROJECT_REPONAME}:${BUILD_NO} .
+      - run:
+          name: Test
+          command: npm test
+      - run:
+          name: Push to docker registry
+          command: gcloud docker -- push "gcr.io/${PROJECT_ID}/${CIRCLE_PROJECT_REPONAME}:${BUILD_NO}"
+      - run:
+          name: Create Release
+          command: curl https://raw.githubusercontent.com/urbanmassage/gist/master/create_octopus_release.sh | bash
+     
+workflows:
+  version: 2
+  build_release:
+    jobs:
+      - build_release
